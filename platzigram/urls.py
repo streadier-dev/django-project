@@ -13,11 +13,15 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from platzigram import views
+from platzigram import views as local_views
+
+from posts import views as posts_views
 
 from django.urls import path
 
 urlpatterns = [
-    path('hello-world/', views.hello_world),
-    path('hi/', views.hi),
+    path('hello-world/', local_views.hello_world),
+    path('hi/', local_views.hi),
+
+    path ('posts/',posts_views.list_posts)
 ]
