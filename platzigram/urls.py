@@ -14,10 +14,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from platzigram import views as local_views
-
 from django.contrib import admin
 
 from posts import views as posts_views
+from users import views as users_views
 
 from django.conf import settings
 
@@ -25,10 +25,11 @@ from django.conf.urls.static import static
 
 from django.urls import path
 
+
 urlpatterns = [
     path ('admin/', admin.site.urls),
-    path('hello-world/', local_views.hello_world),
-    path('hi/', local_views.hi),
-
-    path ('posts/',posts_views.list_posts)
+    path('hello-world/', local_views.hello_world, name='hello_world'),
+    path('hi/', local_views.hi, name='hi'),
+    path('users/login/', users_views.login_view, name='login'),
+    path ('posts/',posts_views.list_posts, name='feed')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
