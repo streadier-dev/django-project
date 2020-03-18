@@ -11,9 +11,37 @@ from users.models import Profile
 
 from django.db.utils import IntegrityError
 
+#Forms
+from users.forms import ProfileForm
+
 @login_required
 def update_profile(request):
-    return render(request, 'users/update_profile.html')
+
+    profile = request.user.profile
+
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES)
+        if form.is_valid():
+            data = form.cleaned_data
+
+            profile.website = data['website']
+            profile.phone_number = data['phone_number']
+            profile.biography = data ['biography']
+            profile.picture = data ['picture']
+            profile.save()
+
+            return redirect ('update_profile.html')
+    else:
+        form = ProfileForm()
+
+    return render(
+    request = request,
+    template_name='users/update_profile.html',
+    context={
+        'profile': profile,
+        'user': request.user,
+        'form': form
+    })
 
 def login_view(request):
     if request.method == 'POST':
