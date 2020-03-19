@@ -30,7 +30,7 @@ def update_profile(request):
             profile.picture = data ['picture']
             profile.save()
 
-            return redirect ('update_profile.html')
+            return redirect ('update_profile')
     else:
         form = ProfileForm()
 
