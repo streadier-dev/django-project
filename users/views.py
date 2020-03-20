@@ -1,7 +1,15 @@
-from django.shortcuts import render, redirect
+
+# Reemplazado por clase de SignupView
+#from django.shortcuts import render, redirect
+#from django.contrib.auth import authenticate, login, logout
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth import authenticate, login, logout
+
+#Views
+
+from django.contrib.auth import views as auth_views
+
 from django.views.generic import DetailView , FormView , UpdateView
 from django.urls import reverse,reverse_lazy
 
@@ -101,6 +109,20 @@ def update_profile(request):
         }
     )
 '''
+class LoginView(auth_views.LoginView):
+    """Login view."""
+
+    template_name = 'users/login.html'
+
+
+class LogoutView(LoginRequiredMixin, auth_views.LogoutView):
+    """Logout view."""
+
+    template_name = 'users/logged_out.html'
+
+
+
+'''
 def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -120,8 +142,6 @@ def logout_view(request):
     return redirect('users:logout')
 
 
-
-'''
 def signup_view(request):
     if request.method == 'POST':
         form = SignupFrom(request.POST)
@@ -135,4 +155,4 @@ def signup_view(request):
             template_name='users/signup.html',
             context={'form':form}
         )
-'''
+        '''
