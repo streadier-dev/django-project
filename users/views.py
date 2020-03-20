@@ -2,20 +2,24 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import authenticate, login, logout
-from django.views.generic import DetailView
-from django.urls import reverse
+from django.views.generic import DetailView , FormView , UpdateView
+from django.urls import reverse,reverse_lazy
 
 # Models
 
 from django.contrib.auth.models import User
 from posts.models import Post
+from users.models import Profile
+
 #Exception
 
 from django.db.utils import IntegrityError
 
 #Forms
 
-from users.forms import ProfileForm, SignupFrom
+# Reemplazado por clase view y se quito el import ProfileForm
+
+from users.forms import SignupFrom
 
 class UserDetailView(LoginRequiredMixin,DetailView):
     """User detail view."""
@@ -33,6 +37,37 @@ class UserDetailView(LoginRequiredMixin,DetailView):
         context['posts'] = Post.objects.filter(user=user).order_by('-created')
         return context
 
+
+class SignupView(FormView):
+
+    template_name = 'users/signup.html'
+    form_class = SignupFrom
+    success_url = reverse_lazy('users:login')
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
+
+class UpdateProfileView(LoginRequiredMixin, UpdateView):
+
+    template_name = 'users/update_profile.html'
+    model = Profile
+    fields = ['website', 'biography', 'phone_number', 'picture']
+
+    def get_object(self):
+        #regresa el perfil del usuario
+        return self.request.user.profile
+
+
+    def get_success_url(self):
+        username = self.object.user.username
+        return reverse('users:detail', kwargs={'username': username})
+
+
+#Reemplazado por clase view
+
+'''
 
 @login_required
 def update_profile(request):
@@ -65,7 +100,7 @@ def update_profile(request):
             'form': form
         }
     )
-
+'''
 def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -84,6 +119,9 @@ def logout_view(request):
     logout(request)
     return redirect('users:logout')
 
+
+
+'''
 def signup_view(request):
     if request.method == 'POST':
         form = SignupFrom(request.POST)
@@ -97,3 +135,4 @@ def signup_view(request):
             template_name='users/signup.html',
             context={'form':form}
         )
+'''
