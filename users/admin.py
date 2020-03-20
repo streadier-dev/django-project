@@ -50,5 +50,7 @@ class UserAdmin(BaseUserAdmin):
         'is_active',
         'is_staff'
     )
+    list_editable = ('first_name','last_name')
+
 admin.site.unregister(User)
 admin.site.register(User,UserAdmin)
