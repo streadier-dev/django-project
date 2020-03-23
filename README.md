@@ -15,7 +15,11 @@ Clone the Github project:
 ```bash
 source .venv/Scripts/activate
 ```
-Install dependencies for Pillow:
+4.-Install Django:
+```bash
+pip install django
+```
+5.-Install dependencie Pillow:
 ```bash
 pip install Pillow
 ```
