@@ -19,7 +19,7 @@ source .venv/Scripts/activate
 ```bash
 pip install django
 ```
-5.-Install dependencie Pillow:
+5.-Install dependency Pillow:
 ```bash
 pip install Pillow
 ```
